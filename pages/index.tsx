@@ -7,6 +7,11 @@ export default function Home() {
   const [screenshot, setScreenshot] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const baseURL =
+    process.env.NODE_ENV === "production"
+      ? process.env.VERCEL_URL
+      : "http://localhost:3000";
+
   const handleSubmit = async (e: FormEvent) => {
     setLoading(true);
     e.preventDefault();
@@ -52,7 +57,9 @@ export default function Home() {
           </div>
           {screenshot && (
             <div className="w-full mx-auto mt-10 md:w-3/4 lg:w-3/5">
-              <img src={screenshot} className="w-full" />
+              <a href={`${baseURL}${screenshot}`} download>
+                <img src={screenshot} className="w-full" />
+              </a>
             </div>
           )}
         </div>
