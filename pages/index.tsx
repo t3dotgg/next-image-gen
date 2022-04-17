@@ -1,16 +1,37 @@
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import { FormEvent, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
+  const [url, setUrl] = useState("");
+  const [screenshot, setScreenshot] = useState(null);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const { data } = await axios.post("/api/image.png", { url });
+
+    setScreenshot(data.imageURL);
+
+    alert("Completed");
+  };
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Image Gen</title>
       </Head>
 
-      <main className={styles.main}>
-        <img src="/api/image.png" style={{ width: "100%" }} />
+      <main>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input
+            type="url"
+            name="url"
+            id="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            required
+          />
+          <button type="submit">Get Screenshot</button>
+        </form>
+        {screenshot && <img src={screenshot} style={{ width: "100%" }} />}
       </main>
     </div>
   );
