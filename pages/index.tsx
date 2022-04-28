@@ -7,11 +7,6 @@ export default function Home() {
   const [screenshot, setScreenshot] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const baseURL =
-    process.env.NODE_ENV === "production"
-      ? process.env.VERCEL_URL
-      : "http://localhost:3000";
-
   const handleSubmit = async (e: FormEvent) => {
     setLoading(true);
     e.preventDefault();
