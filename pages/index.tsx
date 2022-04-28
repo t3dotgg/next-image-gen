@@ -18,9 +18,13 @@ export default function Home() {
     const { data } = await axios.post("/api/image.png", { url });
 
     setUrl("");
-    setScreenshot(data.imageURL);
+    setScreenshot(data);
     setLoading(false);
   };
+
+  const Picture = ({ image }: any) => (
+    <img src={`data:image/jpeg;base64,${image}`} className="w-full" />
+  );
 
   return (
     <div>
@@ -28,7 +32,7 @@ export default function Home() {
         <title>Image Gen</title>
       </Head>
 
-      <main className="container w-screen h-screen overflow-hidden p-10 flex items-center justify-center md:p-3 bg-zinc-100">
+      <main className="w-screen h-screen overflow-hidden p-10 flex items-center justify-center md:p-3 bg-zinc-100">
         <div className="flex flex-col items-center justify-center w-full">
           <div className="w-full md:w-3/4 lg:w-3/5">
             <form
@@ -57,9 +61,7 @@ export default function Home() {
           </div>
           {screenshot && (
             <div className="w-full mx-auto mt-10 md:w-3/4 lg:w-3/5">
-              <a href={`${baseURL}${screenshot}`} download>
-                <img src={screenshot} className="w-full" />
-              </a>
+              <Picture image={screenshot} />
             </div>
           )}
         </div>

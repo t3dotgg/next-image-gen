@@ -28,28 +28,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     type: "png",
   });
 
-  let domain = (new URL(req.body.url)).hostname;
-  domain = domain.replace(/^www\./, "");
-  domain = domain.split(".")[0];
-
-  const currentDate = new Date().toISOString().replace(/:/g, "-");
-
-  const fileName = `${domain}-${currentDate}.png`;
-
-  fs.writeFileSync(`public/images/${fileName}`, data);
+  // Write image to base64 string
+  const base64String = data.toString("base64")
 
   await browser.close();
 
-  res.status(201).json({
-    imageURL: `/images/${fileName}`,
-  })
-
-  // Set the s-maxage property which caches the images then on the Vercel edge
-  // Send the image a json response
-  // res.setHeader("Content-Type", "image/png");
-  // res.setHeader("Cache-Control", "public, max-age=31536000");
-  // res.setHeader("Expires", new Date(Date.now() + 31536000).toUTCString());
-  // res.status(200).send(data);
-
-
+  res.status(200).send(base64String);
 };
